@@ -117,12 +117,12 @@ locations, it is possible to keep track of that in the following way:
   - e.g. when an artifact is transfered to a place where it is later found
   during an archaeological excavation after the production event or when it is
   moved to a museum or sold to a new owner. Click here to see a short tutorial
-  on adding a :doc:`/move_event`
+  on adding a :doc:`move_event`
 
 **Example:** Leonardo painted the Mona Lisa in his workshop in Florence,
 therefore Florence would be linked to the artifact as place. It was then
 acquired by King Francis of France and exhibited in Château d'Amboise. This
-change of location can also be tracked in the database by a :doc:`/move_event`.
-Another :doc:`/move_event` maps the transfer of the image to Fountainebleau.
+change of location can also be tracked in the database by a :doc:`move_event`.
+Another :doc:`move_event` maps the transfer of the image to Fountainebleau.
 By adding further move events the way of the picture to the Louvre in Paris
 can be documented.

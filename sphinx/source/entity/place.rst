@@ -71,4 +71,4 @@ Adding multiple places
 ----------------------
 It is not possible to link more than one place (or their subunits) to one
 artifact. This problem can be solved by using :doc:`/examples/move_event`.
-Please go to :doc:`/examples/artifact` for more information.
+Please go to :doc:`/examples/artifacts` for more information.
