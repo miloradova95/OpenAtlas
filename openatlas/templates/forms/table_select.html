@@ -8,7 +8,7 @@
       placeholder="{{ _('change')|uc_first }}"
       readonly="readonly"
       value="{{ selection }}"
-      onclick="showTableModal({{ field.id }}, {{ field.filter_ids }});"
+      onclick="showTableModal('{{ field.id }}', {{ field.filter_ids }});"
       tabindex="0"
         >
   </div>
@@ -86,7 +86,7 @@
             type="button"
             class="btn btn-outline-secondary btn-sm"
             data-bs-dismiss="modal"
-            onclick="showTableModal({{ field.id }}, {{ field.filter_ids }})">{{ _('back')|uc_first }}
+            onclick="showTableModal('{{ field.id }}', {{ field.filter_ids }})">{{ _('back')|uc_first }}
           </button>
           <button
             id="{{ field.id }}-add-{{ add_dynamical }}"
@@ -102,8 +102,11 @@
   <script>
     $("#{{ field.id }}-button")
         .on('keydown', function (event) {
-          if (onActivateKeyInput(event))
-            showTableModal({{ field.id }}, {{ field.filter_ids }});
+          if (onActivateKeyInput(event)) {
+            const fieldId = '{{field.id}}';
+            console.log("=>(table_select.html:107) fieldId", fieldId);
+            showTableModal(fieldId, {{ field.filter_ids }});
+          }
         });
 
     $("#add-{{ add_dynamical }}-modal-{{field.id}} #name_dynamic")

@@ -192,14 +192,19 @@ async function ajaxAddEntity(data) {
 }
 
 async function showTableModal(fieldId, filterIds) {
-    console.log("=>(table_select.html:110) showTableModal");
+  $(`#${ fieldId }-modal`).modal('show');
 
-    $(`#${ fieldId.id }-modal`).modal('show');
-
-    const modalTable = $(`#${fieldId.id }-modal .modal-body-table`);
-    if(modalTable.is(':empty')) {
-        await refillTable(fieldId.id, filterIds);
-    }
+  const modalTable = $(`#${fieldId }-modal .modal-body-table`);
+  if(modalTable.is(':empty')) {
+    modalTable.append(
+        '<div class="mx-auto mt-5 mb-5 text-center">' +
+        ' <span ' +
+        '   class="spinner-border spinner-border-sm" ' +
+        '   role="status" ' +
+        '   aria-hidden="true"></span>' +
+        ' Loading...</div>')
+    await refillTable(fieldId, filterIds);
+  }
 }
 
 async function refillTable(id, filterIds = []) {

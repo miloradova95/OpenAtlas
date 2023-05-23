@@ -226,15 +226,11 @@ class TableSelect(HiddenInput):
         for class_name in field.add_dynamical:
             field.forms[class_name] = get_form(class_name)
 
-        table, selection = get_table_content(
-            field.id,
-            field.data,
-            field.filter_ids)
+
         return render_template(
             'forms/table_select.html',
             field=field,
-            table=table.display(field.id),
-            selection=selection) + super().__call__(field, **kwargs)
+            selection=field.data) + super().__call__(field, **kwargs)
 
 
 class TableField(HiddenField):
