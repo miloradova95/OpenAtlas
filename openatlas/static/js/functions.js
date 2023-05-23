@@ -191,12 +191,24 @@ async function ajaxAddEntity(data) {
   return newEntityId;
 }
 
+async function showTableModal(fieldId, filterIds) {
+    console.log("=>(table_select.html:110) showTableModal");
+
+    $(`#${ fieldId.id }-modal`).modal('show');
+
+    const modalTable = $(`#${fieldId.id }-modal .modal-body-table`);
+    if(modalTable.is(':empty')) {
+        await refillTable(fieldId.id, filterIds);
+    }
+}
+
 async function refillTable(id, filterIds = []) {
   const tableContent = await $.ajax({
     type: 'post',
     url: `/ajax/get_entity_table/${id}`,
     data: {filterIds: JSON.stringify(filterIds)},
   });
+
   $(`#${id}-modal .modal-body-table`)
     .empty()
     .append($(`${tableContent}`));

@@ -8,7 +8,7 @@
       placeholder="{{ _('change')|uc_first }}"
       readonly="readonly"
       value="{{ selection }}"
-      onclick="$('#{{ field.id }}-modal').modal('show')"
+      onclick="showTableModal({{ field.id }}, {{ field.filter_ids }});"
       tabindex="0"
         >
   </div>
@@ -51,7 +51,7 @@
             + {{ _(add_dynamical)|uc_first }}
           </button>
         {% endfor %}
-        <div class="modal-body-table">{{ table|safe }}</div>
+        <div class="modal-body-table"></div>
       </div>
       <div class="modal-footer">
         <button
@@ -86,7 +86,7 @@
             type="button"
             class="btn btn-outline-secondary btn-sm"
             data-bs-dismiss="modal"
-            onclick="$('#{{ field.id }}-modal').modal('show')">{{ _('back')|uc_first }}
+            onclick="showTableModal({{ field.id }}, {{ field.filter_ids }})">{{ _('back')|uc_first }}
           </button>
           <button
             id="{{ field.id }}-add-{{ add_dynamical }}"
@@ -103,7 +103,7 @@
     $("#{{ field.id }}-button")
         .on('keydown', function (event) {
           if (onActivateKeyInput(event))
-            $('#{{ field.id }}-modal').modal('show');
+            showTableModal({{ field.id }}, {{ field.filter_ids }});
         });
 
     $("#add-{{ add_dynamical }}-modal-{{field.id}} #name_dynamic")
