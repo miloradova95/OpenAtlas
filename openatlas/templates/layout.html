@@ -40,7 +40,15 @@
           primary: '{{ config.CSS.button.primary }}',
           secondary: '{{ config.CSS.button.secondary }}'
       }
-  }
+    }
+    // Register AJAX to always use the CSRF Token
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", bookmark_csrf_token);
+        }
+      }
+    });
   </script>
   <script src="/static/js/functions.js"></script>
   <script src="/static/js/forms.js"></script>
