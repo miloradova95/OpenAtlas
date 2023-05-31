@@ -1,3 +1,14 @@
+function setupAJAX(csrf_token) {
+  // Register AJAX to always use the CSRF Token
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrf_token);
+      }
+    }
+  });
+}
+
 tinymce.init({
   menubar: false,
   relative_urls: false,
