@@ -194,7 +194,13 @@ async function ajaxAddEntity(data) {
 async function showTableModal(fieldId, filterIds) {
   $(`#${ fieldId }-modal`).modal('show');
 
+  await loadModalTable(fieldId, filterIds);
+}
+
+async function loadModalTable(fieldId, filterIds) {
   const modalTable = $(`#${fieldId }-modal .modal-body-table`);
+  console.log("try fetch", fieldId);
+
   if(modalTable.is(':empty')) {
     modalTable.append(
         '<div class="mx-auto mt-5 mb-5 text-center">' +
@@ -203,6 +209,8 @@ async function showTableModal(fieldId, filterIds) {
         '   role="status" ' +
         '   aria-hidden="true"></span>' +
         ' Loading...</div>')
+    console.log("fetch", fieldId);
+
     await refillTable(fieldId, filterIds);
   }
 }
@@ -213,6 +221,8 @@ async function refillTable(id, filterIds = []) {
     url: `/ajax/get_entity_table/${id}`,
     data: {filterIds: JSON.stringify(filterIds)},
   });
+  console.log("loaded", id);
+
 
   $(`#${id}-modal .modal-body-table`)
     .empty()
