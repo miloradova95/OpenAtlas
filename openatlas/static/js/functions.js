@@ -1,13 +1,11 @@
-function setupAJAX(csrf_token) {
-  // Register AJAX to always use the CSRF Token
-  $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-      if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-        xhr.setRequestHeader("X-CSRFToken", csrf_token);
-      }
+// Register AJAX to always use the CSRF Token
+$.ajaxSetup({
+  beforeSend: function(xhr, settings) {
+    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+      xhr.setRequestHeader("X-CSRFToken", bookmark_csrf_token);
     }
-  });
-}
+  }
+});
 
 tinymce.init({
   menubar: false,
@@ -210,7 +208,6 @@ async function showTableModal(fieldId, filterIds) {
 
 async function loadModalTable(fieldId, filterIds) {
   const modalTable = $(`#${fieldId }-modal .modal-body-table`);
-  console.log("try fetch", fieldId);
 
   if(modalTable.is(':empty')) {
     modalTable.append(
@@ -219,8 +216,7 @@ async function loadModalTable(fieldId, filterIds) {
         '   class="spinner-border spinner-border-sm" ' +
         '   role="status" ' +
         '   aria-hidden="true"></span>' +
-        ' Loading...</div>')
-    console.log("fetch", fieldId);
+        ' Loading...</div>');
 
     await refillTable(fieldId, filterIds);
   }
@@ -232,7 +228,6 @@ async function refillTable(id, filterIds = []) {
     url: `/ajax/get_entity_table/${id}`,
     data: {filterIds: JSON.stringify(filterIds)},
   });
-  console.log("loaded", id);
 
 
   $(`#${id}-modal .modal-body-table`)
