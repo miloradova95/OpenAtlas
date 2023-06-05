@@ -43,7 +43,6 @@ async function getTableContent(id, filterIds) {
 }
 
 async function refillTable(id, filterIds = []) {
-  console.log("refill for", id);
   const tableContent = await getTableContent(id, filterIds);
 
   fillTable(id, tableContent);
@@ -51,7 +50,6 @@ async function refillTable(id, filterIds = []) {
 
 function fillTable(id, tableContent) {
   const table = clearTable(id);
-  console.log("=>(tableFunctions.js:55) tableContent", tableContent);
   table.append($(`${tableContent}`));
   return table;
 }
@@ -62,25 +60,12 @@ function clearTable(fieldId) {
   return table;
 }
 
-async function setupTable(fieldId, filterIds, relatedTables ) {
+async function setupTable(fieldId, filterIds) {
     if(!tableIsEmpty(fieldId)) {
       return;
     }
 
-    relatedTables
-      ?.forEach(x => setTableModalLoading(x));
-
-    const tableContent = await loadModalTable(fieldId, filterIds);
-
-    if(!tableContent) {
-      console.log("=>(tableFunctions.js:76) no table content");
-      relatedTables
-        ?.forEach(x => refillTable(x, filterIds));
-      return;
-    }
-
-    relatedTables
-      ?.forEach(x => fillTable(x, tableContent));
+    loadModalTable(fieldId, filterIds);
 }
 
 
