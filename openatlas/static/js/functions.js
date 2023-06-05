@@ -200,41 +200,6 @@ async function ajaxAddEntity(data) {
   return newEntityId;
 }
 
-async function showTableModal(fieldId, filterIds) {
-  $(`#${ fieldId }-modal`).modal('show');
-
-  await loadModalTable(fieldId, filterIds);
-}
-
-async function loadModalTable(fieldId, filterIds) {
-  const modalTable = $(`#${fieldId }-modal .modal-body-table`);
-
-  if(modalTable.is(':empty')) {
-    modalTable.append(
-        '<div class="mx-auto mt-5 mb-5 text-center">' +
-        ' <span ' +
-        '   class="spinner-border spinner-border-sm" ' +
-        '   role="status" ' +
-        '   aria-hidden="true"></span>' +
-        ' Loading...</div>');
-
-    await refillTable(fieldId, filterIds);
-  }
-}
-
-async function refillTable(id, filterIds = []) {
-  const tableContent = await $.ajax({
-    type: 'post',
-    url: `/ajax/get_entity_table/${id}`,
-    data: {filterIds: JSON.stringify(filterIds)},
-  });
-
-
-  $(`#${id}-modal .modal-body-table`)
-    .empty()
-    .append($(`${tableContent}`));
-}
-
 async function ajaxAddType(data, fieldId, typeId, multiple=false) {
   const newTypeId = await $.ajax({
     type: 'post',
@@ -330,34 +295,6 @@ function selectFromTreeMulti(name, value_type = false) {
 function deselectNode(fieldId,nodeId){
  $(`#${fieldId}-tree`).jstree('deselect_node', nodeId);
  selectFromTreeMulti(fieldId)
-}
-
-function selectFromTable(element, table, id,label= undefined) {
-  $("#" + table).attr('value', id);
-  $("#" + table + "-button").val(label || element?.innerText );
-  $("#" + table + "-button").focus(); /* to refresh/fill button and remove validation errors */
-  $("#" + table + "-clear-field").show();
-  $('#' + table + '-modal').modal('hide');
-}
-
-function deselectFromTable(tableName, nodeId) {
-  $(`#${tableName}_table`)?.find(`#${nodeId}[type="checkbox"]`)?.prop( "checked", false )
-  selectFromTableMulti(tableName)
-}
-
-function selectFromTableMulti(name) {
-  let checkedNames = [];
-  let ids = [];
-  $('#' + name + '_table').DataTable().rows().nodes().to$().find('input[type="checkbox"]').each(
-    function () {
-      if ($(this).is(':checked')) {
-        checkedNames.push({name:$(this).val(),id:$(this).attr('id')});
-        ids.push($(this).attr('id'));
-      }
-    });
-  $('#' + name + '-selection')
-      .html(checkedNames.map(x => closableBadge(x.name,`deselectFromTable('${name}',${x.id})`)));
-  $('#' + name).val(ids.length > 0 ? '[' + ids + ']' : '').trigger('change');
 }
 
 function clearSelect(name) {

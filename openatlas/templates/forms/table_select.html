@@ -137,6 +137,10 @@
     });
 
   $( window ).on( "load", function() {
-    loadModalTable('{{field.id}}', {{ field.filter_ids }});
+    setupTable(
+      '{{field.id}}',
+      {{ field.filter_ids }},
+      {{ field.related_tables | safe }}
+    );
   });
 </script>
