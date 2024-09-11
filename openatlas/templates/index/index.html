@@ -3,7 +3,8 @@
   {% if session.login_previous_success %}
     {{ _('last login')|uc_first }}: {{ session.login_previous_success }}.
     {% if session.login_previous_failures > 0 %}
-      - {{ _('failed logins')|uc_first }}: {{ session.login_previous_failures }}
+      - {{ _('failed logins')|uc_first }}:
+      {{ session.login_previous_failures }}
     {% endif %}
   {% else %}
     {{ _('first login') }}
@@ -15,7 +16,32 @@
     {{ _('profile')|link(url_for('profile_index'))|safe }}
   {% endif %}
 </p>
+<div id="example-table"></div>
+<script>
+  // Initialize Tabulator when the DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    // Create Tabulator on DOM element with id "example-table"
+    var table = new Tabulator("#example-table", {
+      layout:"fitColumns",
+      pagination:"local",
+      paginationSize:6,
+      paginationSizeSelector:[3, 6, 8, 10],
+      movableColumns:true,
+      paginationCounter:"rows",
+      ajaxURL: "/data", // URL for fetching data
+      autoColumns: true,
+      autoColumnsDefinitions: function (definitions) {
+        //definitions - array of column definition objects
 
+        definitions.forEach((column) => {
+          column.headerFilter = true; // add header filter to every column
+        });
+
+        return definitions;
+      },
+    });
+  });
+</script>
 <div class="row">
   {% if tables.overview.rows %}
     <div class="col-12 col-sm-6" style="max-width: 500px">

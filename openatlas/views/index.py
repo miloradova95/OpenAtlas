@@ -1,4 +1,4 @@
-from flask import flash, g, render_template, request, session, url_for
+from flask import flash, g, jsonify, render_template, request, session, url_for
 from flask_babel import format_number, lazy_gettext as _
 from flask_login import current_user
 from flask_wtf import FlaskForm
@@ -68,8 +68,8 @@ def overview() -> str:
             paging=False,
             defs=[{'className': 'dt-body-right', 'targets': 1}]),
         'latest': Table([
-                _('latest'), _('name'), _('class'), _('begin'), _('end'),
-                _('user')],
+            _('latest'), _('name'), _('class'), _('begin'), _('end'),
+            _('user')],
             paging=False,
             order=[[0, 'desc']])}
     for entity_id in current_user.bookmarks:
@@ -112,6 +112,23 @@ def overview() -> str:
     return render_template('tabs.html', tabs=tabs, crumbs=['overview'])
 
 
+@app.route('/data')
+def data() -> Response:
+    output = []
+    print("get entities")
+    entities = Entity.get_latest(1000000)
+    print("loop")
+    for entity in entities:
+        output.append({
+            "id": entity.id,
+            "name": link(entity),
+            "class": entity.class_.label,
+            "begin": entity.first,
+            "end": entity.last})
+    print(len(output))
+    return output
+
+
 @app.route('/index/setlocale/<language>')
 def set_locale(language: str) -> Response:
     if language not in app.config['LANGUAGES']:
@@ -126,7 +143,6 @@ def set_locale(language: str) -> Response:
 @app.route('/overview/feedback', methods=['GET', 'POST'])
 @required_group('readonly')
 def index_feedback() -> str | Response:
-
     class FeedbackForm(FlaskForm):
         subject = SelectField(
             _('subject'),
